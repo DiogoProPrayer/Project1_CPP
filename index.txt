@@ -2,12 +2,6 @@ Ficheiro de texto random para testar o git
 
 yyeeeehhhhhh
 
-Hello World!
-
-
-
-
-fixxxxeeee
-e
+Hello 
 e
 e
