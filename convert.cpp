@@ -10,7 +10,7 @@ namespace svg
         std::vector<SVGElement *> svg_elements;
         readSVG(svg_file, dimensions, svg_elements);
         PNGImage img(dimensions.x, dimensions.y);
-        for (SVGElement* e : svg_elements)    
+        for (SVGElement* e : svg_elements)
         {
             e->draw(img);
         }
