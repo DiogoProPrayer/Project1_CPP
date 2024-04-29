@@ -11,5 +11,3 @@
 ## Accomplished tasks
 
 Brief summary of what you implemented.
-
-
