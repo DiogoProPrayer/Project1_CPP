@@ -6,6 +6,7 @@
 #include "Point.hpp"
 #include "PNGImage.hpp"
 
+
 namespace svg
 {
     class SVGElement
@@ -38,5 +39,33 @@ namespace svg
         Point center;
         Point radius;
     };
+    //Circle is a exception of an Ellipse. Thereafter Circle is a subclass of Ellipse will use the same draw fucntion later
+    class Circle:public SVGElement{
+    public:
+    Circle(const Color &fill, const Point &center, const Point &radius);
+    void draw(PNGImage &img) const override;
+    private:
+        Color fill;
+        Point center;
+        int radius;
+    };
+    class Rectangle:public SVGElement{
+    public:
+    Rectangle(const Color &fill,const int &height,const int &width);
+    void draw(PNGImage &img) const override;
+    private:
+    Color fill;
+    int height;
+    int width;
+    };
+    class Polyline: public SVGElement{
+    public:
+    Polyline(const Color &fill,const std::vector<Point> clusterpoints);
+    void draw(PNGImage &img) const override;
+    private:
+    Color fill;
+    std::vector<Point> clusterpoints;
+    };
+    
 }
 #endif
