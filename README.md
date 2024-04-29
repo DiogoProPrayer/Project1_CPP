@@ -4,12 +4,10 @@
 ## Group elements
 
 - up202306461 Diogo Alexandre Morais Pinheiro
-- upXXXXX Name of element 2
-- upXXXXX Name of element 3
+- up202305035 Ana Belém Meireles Bilhoto 
+- up202305089 Bárbara Catarina Cerqueira Veloso Gomes
 
 
 ## Accomplished tasks
 
 Brief summary of what you implemented.
-
-
