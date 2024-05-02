@@ -6,7 +6,6 @@
 #include "Point.hpp"
 #include "PNGImage.hpp"
 
-
 namespace svg
 {
     class SVGElement
