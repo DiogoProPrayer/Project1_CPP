@@ -42,8 +42,8 @@ namespace svg
     
     class Circle:public SVGElement{
     public:
-    Circle(const Color &fill, const Point &center, const Point &radius);
-    void draw(PNGImage &img) const override;
+        Circle(const Color &fill, const Point &center, const Point &radius);
+        void draw(PNGImage &img) const override;
     private:
         Color fill;
         Point center;
@@ -52,42 +52,42 @@ namespace svg
 
     class Rectangle:public SVGElement{
     public:
-    Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor);
-    void draw(PNGImage &img) const override;
+        Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor);
+        void draw(PNGImage &img) const override;
     private:
     Color fill;
-    int height;
-    int width;
-    Point upleftcor;
+        int height;
+        int width;
+        Point upleftcor;
     };
 
     class Polyline: public SVGElement{
     public:
-    Polyline(const Color &stroke,const std::vector<Point> &clusterpoints);
-    void draw(PNGImage &img) const override;
+        Polyline(const Color &stroke,const std::vector<Point> &clusterpoints);
+        void draw(PNGImage &img) const override;
     private:
-    Color stroke;
-    std::vector<Point> clusterpoints;
+        Color stroke;
+        std::vector<Point> clusterpoints;
     };
 
     class Line:public SVGElement
     {
     public:
-    Line(const Color &stroke,const  Point &Start,const Point &End);
-    void draw(PNGImage &img) const override;
+        Line(const Color &stroke,const  Point &Start,const Point &End);
+        void draw(PNGImage &img) const override;
     private:
-    Color stroke;
-    Point Start;
-    Point End;
+        Color stroke;
+        Point Start;
+        Point End;
     };
 
     class Polygon: public SVGElement{
     public:
-    Polygon(const Color &fill,const std::vector<Point> &poly);
-    void draw(PNGImage&img) const override;
+        Polygon(const Color &fill,const std::vector<Point> &poly);
+        void draw(PNGImage&img) const override;
     private:
-    Color fill;
-    std::vector<Point> poly;
+        Color fill;
+        std::vector<Point> poly;
     };
 
    
