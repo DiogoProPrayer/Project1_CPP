@@ -30,7 +30,7 @@ namespace svg
     class Ellipse : public SVGElement
     {
     public:
-        Ellipse(const Color &fill, const Point &center, const Point &radius);
+        Ellipse(const Color &fill, const Point &center, const int &radius);
         void draw(PNGImage &img) const override;
 
     private:
@@ -84,7 +84,7 @@ namespace svg
     class Polygon: public SVGElement{
     public:
         Polygon(const Color &fill,const std::vector<Point> &poly);
-        void draw(PNGImage&img) const override;
+        void draw(PNGImage &img) const override;
     private:
         Color fill;
         std::vector<Point> poly;
