@@ -30,7 +30,7 @@ namespace svg
     class Ellipse : public SVGElement
     {
     public:
-        Ellipse(const Color &fill, const Point &center, const int &radius);
+        Ellipse(const Color &fill, const Point &center, const Point &radius);
         void draw(PNGImage &img) const override;
 
     private:
@@ -42,12 +42,12 @@ namespace svg
     
     class Circle:public SVGElement{
     public:
-        Circle(const Color &fill, const Point &center, const Point &radius);
+        Circle(const Color &fill, const Point &center, const int &radius);
         void draw(PNGImage &img) const override;
     private:
         Color fill;
         Point center;
-        int radius;
+        Point radius;
     };
 
     class Rectangle:public SVGElement{
