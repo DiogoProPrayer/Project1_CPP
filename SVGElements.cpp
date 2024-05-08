@@ -5,13 +5,8 @@
 namespace svg
 {
     // These must be defined!
-    SVGElement::SVGElement() {
-    
-
-    }
-    SVGElement::~SVGElement() {
-
-    }
+    SVGElement::SVGElement() {}
+    SVGElement::~SVGElement() {}
 
     // Ellipse (initial code provided)
     Ellipse::Ellipse(const Color &fill,const Point &center,const Point &radius): fill(fill), center(center), radius(radius) {}
@@ -24,11 +19,12 @@ namespace svg
     // HERE -->
 
 
-    Circle::Circle(const Color &fill, const Point &center, const int &radius):fill(fill),center(center),radius(radius){}
+    Circle::Circle(const Color &fill, const Point &center, const int &radius):fill(fill),center(center){
+        this->radius.x = radius;
+        this->radius.y = radius;
+    }
     void Circle:: draw(PNGImage &img)const{
-        Point radiusasP;
-        radiusasP.x=radiusasP.y=radius;
-        img.draw_ellipse(center,radiusasP,fill);
+        img.draw_ellipse(center,radius,fill);
     }
 
     Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor):fill(fill),height(height),width(width){}
