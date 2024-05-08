@@ -36,9 +36,6 @@ namespace svg
         //! @param center Ellipse center.
         //! @param radius Ellipse radius in x and y axes.
         Ellipse(const Color &fill, const Point &center, const Point &radius);
-
-        //! Draw circle.
-        //! @param img Png.
         void draw(PNGImage &img) const override;
 
     private:
@@ -51,20 +48,20 @@ namespace svg
 
     class Circle:public SVGElement{
     public:
-    //! Constructor of a Circle.
-    //! Recieves a fill element.
-    //! @param fill circle  color.
-    //! @param center circle center.
-    //! @param center radius of the circle in the x and y axis. 
-    Circle(const Color &fill, const Point &center, const int &radius);
+        //! Constructor of a Circle.
+        //! Recieves a fill element.
+        //! @param fill circle  color.
+        //! @param center circle center.
+        //! @param center radius of the circle in the x and y axis. 
+        Circle(const Color &fill, const Point &center, const int &radius);
 
-    //! Executes the draw function.
-    //! @param img Png where the image will be drawn. 
-    void draw(PNGImage &img) const override;
+        //! Executes the draw function.
+        //! @param img Png where the image will be drawn. 
+        void draw(PNGImage &img) const override;
     private:
         Color fill;
         Point center;
-        int radius;
+        Point radius;
     };
 
     class Rectangle:public SVGElement{
