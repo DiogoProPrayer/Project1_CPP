@@ -42,12 +42,12 @@ namespace svg
     
     class Circle:public SVGElement{
     public:
-        Circle(const Color &fill, const Point &center, const Point &radius);
+        Circle(const Color &fill, const Point &center, const int &radius);
         void draw(PNGImage &img) const override;
     private:
         Color fill;
         Point center;
-        int radius;
+        Point radius;
     };
 
     class Rectangle:public SVGElement{
@@ -84,7 +84,7 @@ namespace svg
     class Polygon: public SVGElement{
     public:
         Polygon(const Color &fill,const std::vector<Point> &poly);
-        void draw(PNGImage&img) const override;
+        void draw(PNGImage &img) const override;
     private:
         Color fill;
         std::vector<Point> poly;
