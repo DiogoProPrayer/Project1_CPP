@@ -19,12 +19,11 @@ namespace svg
     // HERE -->
 
 
-    Circle::Circle(const Color &fill, const Point &center, const int &radius):fill(fill),center(center){
-        this->radius.x = radius;
-        this->radius.y = radius;
-    }
+    Circle::Circle(const Color &fill, const Point &center, const int &radius):fill(fill),center(center),radius(radius) {}
     void Circle:: draw(PNGImage &img)const{
-        img.draw_ellipse(center,radius,fill);
+        Point radiusasP;
+        radiusasP.x=radiusasP.y=radius;
+        img.draw_ellipse(center,radiusasP,fill);
     }
 
     Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor):fill(fill),height(height),width(width){}
