@@ -36,9 +36,9 @@ namespace svg
         uprightcor.x=upleftcor.x+width;
         uprightcor.y=upleftcor.y;
         drightcor.x=uprightcor.x;
-        drightcor.y=uprightcor.y-height;
+        drightcor.y=uprightcor.y+height;
         dleftcor.x=upleftcor.x;
-        dleftcor.y=upleftcor.y-height;
+        dleftcor.y=upleftcor.y+height;
         tp.push_back(upleftcor);
         tp.push_back(uprightcor);
         tp.push_back(drightcor);
