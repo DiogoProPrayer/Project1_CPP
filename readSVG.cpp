@@ -9,7 +9,7 @@ using namespace tinyxml2;
 namespace svg
 {
     // Function declaration - definition later in the code
-    void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<string> transformations = {});
+    void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations = {});
 
 
 
@@ -29,7 +29,8 @@ namespace svg
         readElements(xml_elem, doc.RootElement(),svg_elements); 
     }
 
-    void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<string> transformations = {}){
+
+    void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations = {}){
         
 
         if (elem->Name()=="ellipse"){
@@ -43,15 +44,39 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
         }
+
+
+
         else if (elem->Name()=="circle"){
             //Define a Circle
             Point p = {elem->IntAttribute("cx"), elem->IntAttribute("cy")};
@@ -62,16 +87,39 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
-
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
         }
+
+
+
         else if (elem->Name()=="rect")
         {
             //Define a Rectangle
@@ -83,15 +131,39 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
         }
+
+
+
          else if (elem->Name()=="polyline")
         {
             //Define a Polyline
@@ -125,15 +197,40 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
-        }else if (elem->Name()=="line")
+        }
+        
+        
+        
+        else if (elem->Name()=="line")
         {
             //Define a Line
             Point start = {elem->IntAttribute("x1"),elem->IntAttribute("y1")};
@@ -146,15 +243,40 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
-        }  else if (elem->Name()=="polygon")
+        }  
+        
+        
+        
+        else if (elem->Name()=="polygon")
         {
             //Define a Polygon
             string points = elem->Attribute("points");
@@ -187,15 +309,77 @@ namespace svg
             {
                 if (elem->Attribute("transform-origin")!=0)
                 {
-                    objeto.transform(elem->Attribute("transform"),elem->Attribute("transform-origin"));
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    objeto.transform(elem->Attribute("transform"), o );
                 } else{
                     objeto.transform(elem->Attribute("transform"));
                 }
             }
 
-            //Apply group transformations (to be done)
+            //Apply group transformations
+            for (pair trans : transformations){
+                objeto.transform(trans.first,trans.second);
+            }
 
+
+        } 
+        
+        
+
+        // HANDLE GROUPS
+        else if (elem->Name()=="g")
+        {
+            if (elem->Attribute("transform")!=0)
+            {
+                if (elem->Attribute("transform-origin")!=0)
+                {
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    transformations.push_back(pair(elem->Attribute("transform"),o));
+                } else{
+                    Point o = {0,0};
+                    transformations.push_back(pair(elem->Attribute("transform"),o));
+                }
+                
+                //Recursive function call for the group (to be done)
+                
+                transformations.pop_back();
+            }
         }
+        
         
 
 
@@ -203,10 +387,10 @@ namespace svg
 
 
 
-        for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-    {
-        readElements(root, child, svg_elements, transformations);   
-    }
+    //     for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+    // {
+    //     readElements(root, child, svg_elements, transformations);   
+    // }
 
 
     }
