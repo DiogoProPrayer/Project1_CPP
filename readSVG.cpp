@@ -11,6 +11,7 @@ namespace svg
     // Function declaration - definition later in the code
     void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
 
+    void use(XMLElement *root, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
 
 
     void readSVG(const string& svg_file, Point& dimensions, vector<SVGElement *>& svg_elements)
@@ -371,10 +372,47 @@ namespace svg
             }
         }
         
+        //HANDLE USE's
+        else if (string(elem->Name())=="use")
+        {
+            string ref = elem->Attribute("href");
+            string id = ref.substr(1);
+            vector<pair<string,Point>> t_temp = transformations;  //Create a temporary transformations vector to pass the group transformations applied to the use
+            
+            //Check if <use> has any transformation, and store it in vector
+            if (elem->Attribute("transform")!=0)
+            {
+                if (elem->Attribute("transform-origin")!=0)
+                {
+                    Point o;
+                    string ori = elem->Attribute("transform-origin") + 'x';
+                    string cache = "";
+                    for (char c : ori){
+                        if ((c == ' ')&&(cache!=""))
+                        {
+                            o.x = stoi(cache);
+                            cache = "";
+                        } else if (c=='x')
+                        {
+                            o.y = stoi(cache);
+                            cache = "";
+                        } else if ((c>='0')&&(c<='9'))
+                        {
+                            cache += c;
+                        }
+                    }
+
+                    t_temp.push_back(pair<string,Point>(elem->Attribute("transform"),o));
+                } else{
+                    Point o = {0,0};
+                    t_temp.push_back(pair<string,Point>(elem->Attribute("transform"),o));
+                }
+            }
+
+            use(root,id,svg_elements,t_temp);
+            
+        }
         
-
-
-
 
 
 
@@ -385,6 +423,20 @@ namespace svg
 
 
     }
+
+
+
+    void use(XMLElement *root, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations){
+        
+
+
+
+    }
+
+
+
+
+
 
 
 }
