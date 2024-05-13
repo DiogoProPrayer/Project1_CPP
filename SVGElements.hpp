@@ -24,9 +24,8 @@ namespace svg
 
     void readSVG(const std::string &svg_file,Point &dimensions,std::vector<SVGElement *> &svg_elements);
     void convert(const std::string &svg_file,const std::string &png_file);
-    
-    
-   
+
+
     class Ellipse : public SVGElement
     {
     public:
@@ -43,7 +42,6 @@ namespace svg
         Point center;
         Point radius;
     };
-
 
 
     class Circle:public SVGElement{
@@ -66,72 +64,70 @@ namespace svg
 
     class Rectangle:public SVGElement{
     public:
-    //! Constructor of a Rectangle.
-    //! Recieves a fill elemen.
-    //! @param fill rectangle color.
-    //! @param width rectangle width.
-    //! @param upleftcor upper left corner of the rectangle. 
-    Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor);
-    
-    //! Executes the draw function.
-    //! @param img Png where the image will be drawn.
-    void draw(PNGImage &img) const override;
+        //! Constructor of a Rectangle.
+        //! Recieves a fill element.
+        //! @param fill rectangle color.
+        //! @param width rectangle width.
+        //! @param upleftcor upper left corner of the rectangle. 
+        Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor);
+        
+        //! Executes the draw function.
+        //! @param img Png where the image will be drawn.
+        void draw(PNGImage &img) const override;
     private:
-    Color fill;
-    int height;
-    int width;
-    Point upleftcor;
+        Color fill;
+        int height;
+        int width;
+        Point upleftcor;
     };
 
     class Polyline: public SVGElement{
     public:
-    //! Constructor of a polyline.
-    //! @param stroke color of the line.
-    //! @param clusterpoint points belonging to the polyline.
-    Polyline(const Color &stroke,const std::vector<Point> &clusterpoints);
+        //! Constructor of a polyline.
+        //! @param stroke color of the line.
+        //! @param clusterpoint points belonging to the polyline.
+        Polyline(const Color &stroke,const std::vector<Point> &clusterpoints);
 
-    //! Executes the draw function.
-    //! @param img Png where the image will be drawn.
-    void draw(PNGImage &img) const override;
+        //! Executes the draw function.
+        //! @param img Png where the image will be drawn.
+        void draw(PNGImage &img) const override;
     private:
-    Color stroke;
-    std::vector<Point> clusterpoints;
+        Color stroke;
+        std::vector<Point> clusterpoints;
     };
 
     class Line:public SVGElement
     {
     public:
-    //! Constructor of a line.
-    //! @param stroke color of the line.
-    //! @param Start beginning point.
-    //! @param End end point.
-    Line(const Color &stroke,const  Point &Start,const Point &End);
+        //! Constructor of a line.
+        //! @param stroke color of the line.
+        //! @param Start beginning point.
+        //! @param End end point.
+        Line(const Color &stroke,const  Point &Start,const Point &End);
 
-    //! Executes the draw function.
-    //! @param img Png where the image will be drawn.
-    void draw(PNGImage &img) const override;
+        //! Executes the draw function.
+        //! @param img Png where the image will be drawn.
+        void draw(PNGImage &img) const override;
     private:
-    Color stroke;
-    Point Start;
-    Point End;
+        Color stroke;
+        Point Start;
+        Point End;
     };
 
     class Polygon: public SVGElement{
     public:
-    //! Constructor of a polygon.
-    //! @param fill color of the polygon.
-    //! @param poly points defining the polygon.
-    Polygon(const Color &fill,const std::vector<Point> &poly);
+        //! Constructor of a polygon.
+        //! @param fill color of the polygon.
+        //! @param poly points defining the polygon.
+        Polygon(const Color &fill,const std::vector<Point> &poly);
 
-    //! Executes the draw function.
-    //! @param img Png where the image will be drawn
-    void draw(PNGImage&img) const override;
+        //! Executes the draw function.
+        //! @param img Png where the image will be drawn
+        void draw(PNGImage&img) const override;
     private:
-    Color fill;
-    std::vector<Point> poly;
+        Color fill;
+        std::vector<Point> poly;
     };
-
-   
 
 }
 #endif

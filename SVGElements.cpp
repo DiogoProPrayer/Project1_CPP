@@ -27,7 +27,7 @@ namespace svg
         img.draw_ellipse(center,radius,fill);
     }
 
-    Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor):fill(fill),height(height),width(width){}
+    Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor):fill(fill),height(height),width(width),upleftcor(upleftcor){}
     void Rectangle::draw(PNGImage &img)const{
         Point uprightcor;
         Point dleftcor;
