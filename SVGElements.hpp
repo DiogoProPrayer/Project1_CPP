@@ -59,7 +59,7 @@ namespace svg
     private:
         Color fill;
         Point center;
-        Point radius;
+        int radius;
     };
 
     class Rectangle:public SVGElement{
