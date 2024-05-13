@@ -5,7 +5,7 @@
 #include "Color.hpp"
 #include "Point.hpp"
 #include "PNGImage.hpp"
-
+#include <vector>
 
 namespace svg
 {
@@ -16,6 +16,7 @@ namespace svg
         SVGElement();
         virtual ~SVGElement();
         virtual void draw(PNGImage &img) const = 0;
+        virtual void transform(std::string trans,Point cent={0,0}) =0;
     };
 
     // Declaration of namespace functions
@@ -24,8 +25,9 @@ namespace svg
 
     void readSVG(const std::string &svg_file,Point &dimensions,std::vector<SVGElement *> &svg_elements);
     void convert(const std::string &svg_file,const std::string &png_file);
-
-
+    
+    
+   
     class Ellipse : public SVGElement
     {
     public:
@@ -35,13 +37,23 @@ namespace svg
         //! @param center Ellipse center.
         //! @param radius Ellipse radius in x and y axes.
         Ellipse(const Color &fill, const Point &center, const Point &radius);
+
+        //! Executes the draw function.
+        //! @param img Png.
         void draw(PNGImage &img) const override;
 
+        //!
+
+        void transform(std::string trans, Point cent)  override;
+
+
     private:
+
         Color fill;
         Point center;
         Point radius;
     };
+
 
 
     class Circle:public SVGElement{
@@ -56,7 +68,11 @@ namespace svg
         //! Executes the draw function.
         //! @param img Png where the image will be drawn. 
         void draw(PNGImage &img) const override;
+
+        void transform(std::string trans, Point cent)  override;
+
     private:
+
         Color fill;
         Point center;
         int radius;
@@ -65,7 +81,7 @@ namespace svg
     class Rectangle:public SVGElement{
     public:
         //! Constructor of a Rectangle.
-        //! Recieves a fill element.
+        //! Recieves a fill elemen.
         //! @param fill rectangle color.
         //! @param width rectangle width.
         //! @param upleftcor upper left corner of the rectangle. 
@@ -74,11 +90,17 @@ namespace svg
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
         void draw(PNGImage &img) const override;
+
+
+
+         void transform(std::string trans, Point cent)  override;
     private:
+
         Color fill;
         int height;
         int width;
         Point upleftcor;
+        std::vector<Point>clusterpoints;
     };
 
     class Polyline: public SVGElement{
@@ -91,6 +113,9 @@ namespace svg
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
         void draw(PNGImage &img) const override;
+
+
+         void transform(std::string trans, Point cent)  override;
     private:
         Color stroke;
         std::vector<Point> clusterpoints;
@@ -108,6 +133,10 @@ namespace svg
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
         void draw(PNGImage &img) const override;
+
+
+        void transform(std::string trans, Point cent)  override;
+
     private:
         Color stroke;
         Point Start;
@@ -122,14 +151,23 @@ namespace svg
         Polygon(const Color &fill,const std::vector<Point> &poly);
 
         //! Executes the draw function.
-        //! @param img Png where the image will be drawn
+        //! @param img Png where the image will be drawn.
         void draw(PNGImage&img) const override;
+
+
+
+         void transform(std::string trans, Point cent)  override;
+
+
     private:
         Color fill;
         std::vector<Point> poly;
     };
 
+   
+
 }
 #endif
+
 
 
