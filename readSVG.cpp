@@ -11,7 +11,7 @@ namespace svg
     // Function declaration - definition later in the code
     void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
 
-    void use(XMLElement *root, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
+    void use(XMLElement *root, XMLElement *elem, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
 
 
     void readSVG(const string& svg_file, Point& dimensions, vector<SVGElement *>& svg_elements)
@@ -39,7 +39,7 @@ namespace svg
             //Define an Ellipse
             Point p = {elem->IntAttribute("cx"), elem->IntAttribute("cy")};
             Point radius = {elem->IntAttribute("rx"), elem->IntAttribute("ry")};
-            Ellipse objeto(parse_color(elem->Attribute("fill")), p, radius);
+            Ellipse* objeto = new Ellipse(parse_color(elem->Attribute("fill")), p, radius);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
@@ -62,17 +62,18 @@ namespace svg
                             cache += c;
                         }
                     }
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         }
 
 
@@ -80,7 +81,7 @@ namespace svg
         else if (string(elem->Name())=="circle"){
             //Define a Circle
             Point p = {elem->IntAttribute("cx"), elem->IntAttribute("cy")};
-            Circle objeto(parse_color(elem->Attribute("fill")), p, elem->IntAttribute("r"));
+            Circle* objeto = new Circle(parse_color(elem->Attribute("fill")), p, elem->IntAttribute("r"));
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
@@ -103,17 +104,18 @@ namespace svg
                             cache += c;
                         }
                     }
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         }
 
 
@@ -122,7 +124,7 @@ namespace svg
         {
             //Define a Rectangle
             Point p = {elem->IntAttribute("x"), elem->IntAttribute("y")};
-            Rectangle objeto(parse_color(string(elem->Attribute("fill"))), elem->IntAttribute("height"), elem->IntAttribute("width"), p);
+            Rectangle* objeto = new Rectangle(parse_color(string(elem->Attribute("fill"))), elem->IntAttribute("height"), elem->IntAttribute("width"), p);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
@@ -146,17 +148,18 @@ namespace svg
                         }
                     }
 
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         }
 
 
@@ -186,7 +189,7 @@ namespace svg
                     cache.push_back(c);
                 }
             }
-            Polyline objeto(parse_color(elem->Attribute("stroke")), cluster);
+            Polyline* objeto = new Polyline(parse_color(elem->Attribute("stroke")), cluster);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
@@ -209,17 +212,18 @@ namespace svg
                             cache += c;
                         }
                     }
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         }
         
         
@@ -229,7 +233,7 @@ namespace svg
             //Define a Line
             Point start = {elem->IntAttribute("x1"),elem->IntAttribute("y1")};
             Point end = {elem->IntAttribute("x2"),elem->IntAttribute("y2")};
-            Line objeto(parse_color(elem->Attribute("stroke")), start, end);
+            Line *objeto = new Line(parse_color(elem->Attribute("stroke")), start, end);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
@@ -252,17 +256,18 @@ namespace svg
                             cache += c;
                         }
                     }
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         }  
         
         
@@ -292,7 +297,7 @@ namespace svg
                     cache.push_back(c);
                 }
             }
-            Polygon objeto(parse_color(elem->Attribute("fill")), poly);
+            Polygon* objeto = new Polygon(parse_color(elem->Attribute("fill")), poly);
             
 
             //Check if any transformation is applied, and transform if needed
@@ -318,21 +323,21 @@ namespace svg
                         }
                     }
 
-                    objeto.transform(elem->Attribute("transform"), o );
+                    objeto->transform(elem->Attribute("transform"), o );
                 } else{
-                    objeto.transform(elem->Attribute("transform"));
+                    Point o = {0,0};
+                    objeto->transform(elem->Attribute("transform"),o);
                 }
             }
 
             //Apply group transformations
             for (pair<string, Point> trans : transformations){
-                objeto.transform(trans.first,trans.second);
+                objeto->transform(trans.first,trans.second);
             }
 
             // Push_Back the final object with all transformations applied
-            svg_elements.push_back(&objeto);
+            svg_elements.push_back(objeto);
         } 
-        
         
 
         // HANDLE GROUPS
@@ -409,27 +414,32 @@ namespace svg
                 }
             }
 
-            use(root,id,svg_elements,t_temp);
+            use(root,root,id,svg_elements,t_temp);
             
         }
         
 
-
-
-    //     for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-    // {
-    //     readElements(root, child, svg_elements, transformations);   
-    // }
+    
+ 
+    for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+    {
+        std::cout<<"Dump "<<child->Name()<<"\n";
+        readElements(root, child, svg_elements, transformations);
+        std::cout<<"Ended Dump "<<child->Name()<<"\n";
+    }
 
 
     }
 
 
 
-    void use(XMLElement *root, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations){
-        
+    void use(XMLElement *root, XMLElement *elem, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations){
 
-
+    // while (elem->)
+    // {
+    //     /* code */
+    // }
+    
 
     }
 
