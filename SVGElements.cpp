@@ -15,8 +15,7 @@ namespace svg
     Ellipse::Ellipse(const Color &fill,const Point &center,const Point &radius): fill(fill), center(center), radius(radius) {}
 
     void Ellipse::draw(PNGImage &img) const
-    {   std::cout<<"center : "<<center.x<<","<<center.y<<std::endl;
-
+    {
         img.draw_ellipse(center, radius, fill);
     }
 
@@ -33,58 +32,30 @@ namespace svg
         if(par=="rotate"){
             inp>>val1;
             center=center.rotate(cent, val1);
-
         }
         else if(par=="scale"){
             inp>>val1;
             center=center.scale(cent,val1);
             radius.x=radius.x*val1;
             radius.y=radius.y*val1;
+
+           
         }
         else if(par=="translate"){
             Point t;
             inp>>t.x;
             inp>>t.y;
             center=center.translate(t);
+        
+            
         }
     }
 
 
 
-    Circle::Circle(const Color &fill, const Point &center, Point &radius):fill(fill),center(center),radius(radius){}
-    void Circle:: draw(PNGImage &img)const{
-        img.draw_ellipse(center,radius,fill);
-    }
-    void Circle::transform( std::string trans,Point cent) {
-        std:: string par;
-        int val1;
-        for(char &i:trans){
-            if(i==','||i=='(' || i==')'){
-                i=' ';
-            }
-        }
-        std:: istringstream inp(trans);
-        inp>>par;
-        if(par=="rotate"){
-            inp>>val1;
-            center=center.rotate(cent, val1);
+    Circle::Circle(const Color &fill, const Point &center, const Point &radius) : Ellipse(fill, center, radius){}
 
-        }
-        else if(par=="scale"){
-            inp>>val1;
-            center=center.scale(cent,val1);
-            radius.x=radius.x*val1;
-            radius.y=radius.y*val1;
-        }
-        else if(par=="translate"){
-            Point t;
-            inp>>t.x;
-            inp>>t.y;
-            center=center.translate(t);
-        }
-    }
-
-    Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor):fill(fill),height(height),width(width),upleftcor(upleftcor){
+    Rectangle::Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor,std::vector<Point> clusterpoints) : Polygon(fill,poly),height(height),width(width),upleftcor(upleftcor){
         Point uprightcor;
         Point dleftcor;
         Point drightcor;
@@ -94,59 +65,24 @@ namespace svg
         drightcor.y=uprightcor.y+height-1;
         dleftcor.x=upleftcor.x;
         dleftcor.y=drightcor.y;
-        clusterpoints.push_back(upleftcor);
-        clusterpoints.push_back(uprightcor);
-        clusterpoints.push_back(drightcor);
-        clusterpoints.push_back(dleftcor);
-    }
-    void Rectangle::draw(PNGImage &img)const{
-        img.draw_polygon(clusterpoints,fill);
-    }
-    void Rectangle::transform(std::string trans,Point cent) {
-        std:: string par;
-        int val1;
-        for(char &i:trans){
-            if(i==','||i=='(' || i==')'){
-                i=' ';
-            }
-        }
-        std:: istringstream inp(trans);
-        inp>>par;
-        if(par=="rotate"){
-            inp>>val1;
-            for(Point &i:clusterpoints){
-                i=i.rotate(cent,val1);
-            }
-
-        }
-        else if(par=="scale"){
-            inp>>val1;
-            for(Point &i:clusterpoints){
-                i=i.scale(cent,val1);
-            } 
-        }
-        else if(par=="translate"){
-            Point t;
-            inp>>t.x;
-            inp>>t.y;
-            for(Point &i:clusterpoints){
-                i=i.translate(t);
-            } 
-
-        }
+        Polygon::poly.push_back(upleftcor);
+        poly.push_back(uprightcor);
+        poly.push_back(drightcor);
+        poly.push_back(dleftcor);
     }
 
-    Polyline::Polyline(const Color &stroke,const std::vector<Point> &clusterpoints):stroke(stroke),clusterpoints(clusterpoints){}
+    Polyline::Polyline( const Color &stroke, std::vector<Point> &clusterpoints):stroke(stroke),clusterpoints(clusterpoints){}
     void Polyline:: draw(PNGImage &img)const{
         int size=clusterpoints.size();
         for(int i=1;i<size;i++){
-            img.draw_line(clusterpoints[i-1],clusterpoints[i],stroke);
+        img.draw_line(clusterpoints[i-1],clusterpoints[i],stroke);
         }
+
     }
     void Polyline::transform(std::string trans,Point cent) {
         std:: string par;
         int val1;
-        for(char &i:trans){
+          for(char &i:trans){
             if(i==','||i=='(' || i==')'){
                 i=' ';
             }
@@ -178,51 +114,23 @@ namespace svg
         }
     }
 
-    Line::Line(const Color &stroke,const  Point &Start,const Point &End):stroke(stroke),Start(Start),End(End){}
-    void Line::draw(PNGImage &img) const{
-        img.draw_line(Start,End,stroke);
-    }
-    void Line::transform(std::string trans,Point cent) {
-        std:: string par;
-        int val1;
-        for(char &i:trans){
-            if(i==','||i=='(' || i==')'){
-                i=' ';
-            }
-        }
-        std:: istringstream inp(trans);
-        inp>>par;
-        if(par=="rotate"){
-            inp>>val1;
-            Start=Start.rotate(cent,val1);
-            End=End.rotate(cent,val1);
-        }
-        else if(par=="scale"){
-            inp>>val1;
-            Start=Start.scale(cent,val1);
-            End=End.scale(cent,val1);
-           
-        }
-        else if(par=="translate"){
-            Point t;
-            inp>>t.x;
-            inp>>t.y;
-            End=End.translate(t);
-            Start=Start.translate(t);
-            
-        }
+    Line::Line(const Color &stroke,Point End, Point Start,std::vector<Point> clusterpoints): Polyline(stroke,clusterpoints),End(End),Start(Start){
+    this->clusterpoints.push_back(Start);
+    this->clusterpoints.push_back(End);
     }
 
+    
 
-    Polygon:: Polygon(const Color &fill,const std::vector<Point> &poly):fill(fill),poly(poly){}
+
+    Polygon:: Polygon(const Color &fill,std::vector<Point> &poly):fill(fill),poly(poly){}
     void Polygon::draw(PNGImage &img) const
-    {
+    {   
         img.draw_polygon(poly,fill);
     }
     void Polygon::transform(std::string trans,Point cent) {
         std:: string par;
         int val1;
-        for(char &i:trans){
+          for(char &i:trans){
             if(i==','||i=='(' || i==')'){
                 i=' ';
             }
