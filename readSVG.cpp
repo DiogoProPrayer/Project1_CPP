@@ -94,10 +94,11 @@ namespace svg
                     istringstream cogumelo(ori);
                     cogumelo>>o.x;
                     cogumelo>>o.y;
+                    cout<<"Called Trans with O\n";
                     objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    cout<<"Called Trans without O";
+                    cout<<"Called Trans without O\n";
                     objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
@@ -310,7 +311,7 @@ namespace svg
                 
                 //Recursive function call for the group (to be done)
 
-                transformations.pop_back();
+                transformations.erase(transformations.end() - 1);
             }
         }
         

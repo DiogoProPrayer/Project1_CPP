@@ -24,8 +24,8 @@ namespace svg
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
@@ -33,39 +33,34 @@ namespace svg
         if(par=="rotate"){
             inp>>val1;
             center=center.rotate(cent, val1);
+
         }
         else if(par=="scale"){
             inp>>val1;
             center=center.scale(cent,val1);
             radius.x=radius.x*val1;
             radius.y=radius.y*val1;
-
-           
         }
         else if(par=="translate"){
             Point t;
             inp>>t.x;
             inp>>t.y;
             center=center.translate(t);
-        
-            
         }
     }
 
 
 
-    Circle::Circle(const Color &fill, const Point &center, const int &radius):fill(fill),center(center),radius(radius){}
+    Circle::Circle(const Color &fill, const Point &center, Point &radius):fill(fill),center(center),radius(radius){}
     void Circle:: draw(PNGImage &img)const{
-        Point radiusasP;
-        radiusasP.x=radiusasP.y=radius;
-        img.draw_ellipse(center,radiusasP,fill);
+        img.draw_ellipse(center,radius,fill);
     }
     void Circle::transform( std::string trans,Point cent) {
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
@@ -78,9 +73,8 @@ namespace svg
         else if(par=="scale"){
             inp>>val1;
             center=center.scale(cent,val1);
-            radius=radius*val1;
-
-           
+            radius.x=radius.x*val1;
+            radius.y=radius.y*val1;
         }
         else if(par=="translate"){
             Point t;
@@ -112,8 +106,8 @@ namespace svg
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
@@ -146,7 +140,6 @@ namespace svg
     void Polyline:: draw(PNGImage &img)const{
         int size=clusterpoints.size();
         for(int i=1;i<size;i++){
-            std::cout<<"ok"<<std::endl;
             img.draw_line(clusterpoints[i-1],clusterpoints[i],stroke);
         }
     }
@@ -154,8 +147,8 @@ namespace svg
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
@@ -193,8 +186,8 @@ namespace svg
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
@@ -230,8 +223,8 @@ namespace svg
         std:: string par;
         int val1;
         for(char &i:trans){
-            if(trans[i]==','||trans[i]=='(' || trans[i]==')'){
-                trans[i]=' ';
+            if(i==','||i=='(' || i==')'){
+                i=' ';
             }
         }
         std:: istringstream inp(trans);
