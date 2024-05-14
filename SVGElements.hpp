@@ -36,18 +36,16 @@ namespace svg
         //! @param fill Ellipse color.
         //! @param center Ellipse center.
         //! @param radius Ellipse radius in x and y axes.
-        Ellipse(const Color &fill, const Point &center, const Point &radius);
-
+        Ellipse(const Color &fill,const Point &center,const Point &radius);
+        
         //! Executes the draw function.
-        //! @param img Png.
+        //! @param img Png where the image will be drawn. 
         void draw(PNGImage &img) const override;
-
-        //!
 
         void transform(std::string trans, Point cent)  override;
 
 
-    private:
+    protected:
 
         Color fill;
         Point center;
@@ -56,51 +54,13 @@ namespace svg
 
 
 
-    class Circle:public SVGElement{
+    class Circle:public Ellipse{
     public:
         //! Constructor of a Circle.
-        //! Recieves a fill element.
         //! @param fill circle  color.
         //! @param center circle center.
         //! @param center radius of the circle in the x and y axis. 
-        Circle(const Color &fill, const Point &center, const int &radius);
-
-        //! Executes the draw function.
-        //! @param img Png where the image will be drawn. 
-        void draw(PNGImage &img) const override;
-
-        void transform(std::string trans, Point cent)  override;
-
-    private:
-
-        Color fill;
-        Point center;
-        int radius;
-    };
-
-    class Rectangle:public SVGElement{
-    public:
-        //! Constructor of a Rectangle.
-        //! Recieves a fill elemen.
-        //! @param fill rectangle color.
-        //! @param width rectangle width.
-        //! @param upleftcor upper left corner of the rectangle. 
-        Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor);
-        
-        //! Executes the draw function.
-        //! @param img Png where the image will be drawn.
-        void draw(PNGImage &img) const override;
-
-
-
-         void transform(std::string trans, Point cent)  override;
-    private:
-
-        Color fill;
-        int height;
-        int width;
-        Point upleftcor;
-        std::vector<Point>clusterpoints;
+        Circle(const Color &fill, const Point &center, const Point &radius);
     };
 
     class Polyline: public SVGElement{
@@ -108,7 +68,7 @@ namespace svg
         //! Constructor of a polyline.
         //! @param stroke color of the line.
         //! @param clusterpoint points belonging to the polyline.
-        Polyline(const Color &stroke,const std::vector<Point> &clusterpoints);
+        Polyline(const Color &stroke,std::vector<Point> &clusterpoints);
 
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
@@ -116,31 +76,22 @@ namespace svg
 
 
          void transform(std::string trans, Point cent)  override;
-    private:
+    protected:
         Color stroke;
         std::vector<Point> clusterpoints;
     };
 
-    class Line:public SVGElement
+    class Line:public Polyline
     {
     public:
         //! Constructor of a line.
         //! @param stroke color of the line.
         //! @param Start beginning point.
         //! @param End end point.
-        Line(const Color &stroke,const  Point &Start,const Point &End);
-
-        //! Executes the draw function.
-        //! @param img Png where the image will be drawn.
-        void draw(PNGImage &img) const override;
-
-
-        void transform(std::string trans, Point cent)  override;
-
+        Line(const Color &stroke,Point End,Point Start,std::vector<Point> clusterpoints={});
     private:
-        Color stroke;
-        Point Start;
         Point End;
+        Point Start;
     };
 
     class Polygon: public SVGElement{
@@ -148,7 +99,7 @@ namespace svg
         //! Constructor of a polygon.
         //! @param fill color of the polygon.
         //! @param poly points defining the polygon.
-        Polygon(const Color &fill,const std::vector<Point> &poly);
+        Polygon(const Color &fill,std::vector<Point> &poly);
 
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
@@ -159,15 +110,31 @@ namespace svg
          void transform(std::string trans, Point cent)  override;
 
 
-    private:
+    protected:
         Color fill;
         std::vector<Point> poly;
+    };
+    
+    class Rectangle:public Polygon{
+    public:
+        //! Constructor of a Rectangle.
+        //! Recieves a fill elemen.
+        //! @param fill rectangle color.
+        //! @param width rectangle width.
+        //! @param upleftcor upper left corner of the rectangle. 
+        Rectangle(const Color &fill,const int &height,const int &width, const Point &upleftcor,std::vector<Point> clusterpoints={});
+        
+    private:
+        int height;
+        int width;
+        Point upleftcor;
     };
 
    
 
 }
 #endif
+
 
 
 
