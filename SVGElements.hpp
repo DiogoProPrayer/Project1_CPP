@@ -63,7 +63,7 @@ namespace svg
         //! @param fill circle  color.
         //! @param center circle center.
         //! @param center radius of the circle in the x and y axis. 
-        Circle(const Color &fill, const Point &center, const int &radius);
+        Circle(const Color &fill, const Point &center, Point &radius);
 
         //! Executes the draw function.
         //! @param img Png where the image will be drawn. 
@@ -75,7 +75,7 @@ namespace svg
 
         Color fill;
         Point center;
-        int radius;
+        Point radius;
     };
 
     class Rectangle:public SVGElement{

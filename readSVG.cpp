@@ -202,7 +202,7 @@ namespace svg
             //Define a Line
             Point start = {elem->IntAttribute("x1"),elem->IntAttribute("y1")};
             Point end = {elem->IntAttribute("x2"),elem->IntAttribute("y2")};
-            Line *objeto = new Line(parse_color(elem->Attribute("stroke")), start, end);
+            Line *objeto = new Line(parse_color(elem->Attribute("stroke")), end, start);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
