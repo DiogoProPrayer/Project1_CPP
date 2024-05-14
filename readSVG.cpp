@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SVGElements.hpp"
 #include "external/tinyxml2/tinyxml2.h"
+#include <sstream>
 
 using namespace std;
 using namespace tinyxml2;
@@ -46,26 +47,20 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
             //Apply group transformations
@@ -81,33 +76,29 @@ namespace svg
         else if (string(elem->Name())=="circle"){
             //Define a Circle
             Point p = {elem->IntAttribute("cx"), elem->IntAttribute("cy")};
-            Circle* objeto = new Circle(parse_color(elem->Attribute("fill")), p, elem->IntAttribute("r"));
+            Point r = {elem->IntAttribute("r"),elem->IntAttribute("r")};
+            Circle* objeto = new Circle(parse_color(elem->Attribute("fill")), p, r);
             //Check if any transformation is applied, and transform if needed
             if (elem->Attribute("transform")!=0)
             {
+                cout<<"Entrou na condição";
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
             //Apply group transformations
@@ -131,27 +122,20 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
             //Apply group transformations
@@ -168,26 +152,16 @@ namespace svg
         {
             //Define a Polyline
             string points = elem->Attribute("points");
-            points += ' ';
             vector <Point> cluster = {};
-            Point ponto = {};
-            string cache = "";
-            for(char c: points){
-                if (c==',')
-                {
-                    ponto.x = stoi(cache);
-                    cache = "";
-                } else if ((c==' ') && (cache!=""))
-                {
-                    ponto.y = stoi(cache);
-                    cache = "";
-                    cluster.push_back(ponto);
-                    ponto.x = 0;
-                    ponto.y = 0;
-                } else if ((c>='0')&&(c<='9'))
-                {
-                    cache.push_back(c);
-                }
+            Point ponto;
+            for(char &c: points){
+                if (c==',' ){c=' ';}
+            }
+            istringstream turf(points);
+            while(turf){
+                turf>>ponto.x;
+                turf>>ponto.y;
+                cluster.push_back(ponto);
             }
             Polyline* objeto = new Polyline(parse_color(elem->Attribute("stroke")), cluster);
             //Check if any transformation is applied, and transform if needed
@@ -196,26 +170,20 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
             //Apply group transformations
@@ -240,26 +208,20 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
             //Apply group transformations
@@ -276,26 +238,16 @@ namespace svg
         {
             //Define a Polygon
             string points = elem->Attribute("points");
-            points += ' ';
             vector <Point> poly = {};
-            Point ponto = {};
-            string cache = "";
-            for(char c: points){
-                if (c==',')
-                {
-                    ponto.x = stoi(cache);
-                    cache = "";
-                } else if ((c==' ') && (cache!=""))
-                {
-                    ponto.y = stoi(cache);
-                    cache = "";
-                    poly.push_back(ponto);
-                    ponto.x = 0;
-                    ponto.y = 0;
-                } else if ((c>='0')&&(c<='9'))
-                {
-                    cache.push_back(c);
-                }
+            Point ponto;
+            for(char &c: points){
+                if (c==',' ){c=' ';}
+            }
+            istringstream turf(points);
+            while(turf){
+                turf>>ponto.x;
+                turf>>ponto.y;
+                poly.push_back(ponto);
             }
             Polygon* objeto = new Polygon(parse_color(elem->Attribute("fill")), poly);
             
@@ -306,27 +258,20 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-
-                    objeto->transform(elem->Attribute("transform"), o );
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    objeto->transform(string(elem->Attribute("transform")), o );
                 } else{
                     Point o = {0,0};
-                    objeto->transform(elem->Attribute("transform"),o);
+                    cout<<"Called Trans without O";
+                    objeto->transform(string(elem->Attribute("transform")),o);
                 }
             }
 
@@ -348,24 +293,16 @@ namespace svg
                 if (elem->Attribute("transform-origin")!=0)
                 {
                     Point o;
-                    string ori = elem->Attribute("transform-origin") + 'x';
-                    string cache = "";
-                    for (char c : ori){
-                        if ((c == ' ')&&(cache!=""))
-                        {
-                            o.x = stoi(cache);
-                            cache = "";
-                        } else if (c=='x')
-                        {
-                            o.y = stoi(cache);
-                            cache = "";
-                        } else if ((c>='0')&&(c<='9'))
-                        {
-                            cache += c;
-                        }
+                    string ori = elem->Attribute("transform-origin");
+                    for(char &c: ori){
+                        if (c==',' ){c=' ';}
+                        if (c=='(' ){c=' ';}
+                        if (c==')' ){c=' ';}
                     }
-
-                    transformations.push_back(pair<string,Point>(elem->Attribute("transform"),o));
+                    istringstream cogumelo(ori);
+                    cogumelo>>o.x;
+                    cogumelo>>o.y;
+                    transformations.push_back(pair<string,Point>(string(elem->Attribute("transform")),o));
                 } else{
                     Point o = {0,0};
                     transformations.push_back(pair<string,Point>(elem->Attribute("transform"),o));
@@ -423,9 +360,9 @@ namespace svg
  
     for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
     {
-        std::cout<<"Dump "<<child->Name()<<"\n";
+        //std::cout<<"Dump "<<child->Name()<<"\n";
         readElements(root, child, svg_elements, transformations);
-        std::cout<<"Ended Dump "<<child->Name()<<"\n";
+        //std::cout<<"Ended Dump "<<child->Name()<<"\n";
     }
 
 
