@@ -77,7 +77,7 @@ namespace svg
         }
         void onTestCompletion(bool success)
         {
-            cout << (success ? "pass" : "fail") << std::endl;
+            cout << (success ? "\033[92mpass\033[0m" : "\033[91mfail\033[0m") << std::endl;
             if (success)
             {
                 passed_tests++;
@@ -165,9 +165,9 @@ namespace svg
 
             cout << "== TEST EXECUTION SUMMARY ==" << endl
                  << "Total tests: " << total_tests << endl
-                 << "Passed tests: " << passed_tests << endl
-                 << "Failed tests: " << failed_tests << endl
-                 << "See " << LOG_FILE_NAME << " for details." << endl;
+                 << "\033[92mPassed tests: " << passed_tests << endl
+                 << "\033[91mFailed tests: " << failed_tests << endl
+                 << "\033[0mSee " << LOG_FILE_NAME << " for details." << endl;
         }
     };
 }
