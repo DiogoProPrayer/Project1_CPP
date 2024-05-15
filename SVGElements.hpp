@@ -16,7 +16,7 @@ namespace svg
         SVGElement();
         virtual ~SVGElement();
         virtual void draw(PNGImage &img) const = 0;
-        virtual void transform(std::string trans,Point cent={0,0}) =0;
+        virtual void transform(std::string trans,Point) =0;
     };
 
     // Declaration of namespace functions
@@ -28,11 +28,9 @@ namespace svg
     
     
    
-    class Ellipse : public SVGElement
-    {
+    class Ellipse : public SVGElement{
     public:
         //! Constructor of an Ellipse.
-        //! Takes the radius as a Point, as well as the center and uses this values to draw an Ellipse.which is then filled with the color defined in fill.
         //! @param fill Ellipse color.
         //! @param center Ellipse center.
         //! @param radius Ellipse radius in x and y axes.
@@ -42,6 +40,10 @@ namespace svg
         //! @param img Png where the image will be drawn. 
         void draw(PNGImage &img) const override;
 
+            
+        //! Executes the transformation.
+        //! @param trans transformation to be done.
+        //! @param cent transformation-origin.
         void transform(std::string trans, Point cent)  override;
 
 
@@ -74,15 +76,17 @@ namespace svg
         //! @param img Png where the image will be drawn.
         void draw(PNGImage &img) const override;
 
+        //! Executes the transformation.
+        //! @param trans transformation to be done.
+        //! @param cent transformation-origin.
+        void transform(std::string trans, Point cent)  override;
 
-         void transform(std::string trans, Point cent)  override;
     protected:
         Color stroke;
         std::vector<Point> clusterpoints;
     };
 
-    class Line:public Polyline
-    {
+    class Line:public Polyline{
     public:
         //! Constructor of a line.
         //! @param stroke color of the line.
@@ -104,10 +108,11 @@ namespace svg
         //! Executes the draw function.
         //! @param img Png where the image will be drawn.
         void draw(PNGImage&img) const override;
-
-
-
-         void transform(std::string trans, Point cent)  override;
+        
+        //! Executes the transformation.
+        //! @param trans transformation to be done.
+        //! @param cent transformation-origin.
+        void transform(std::string trans, Point cent)  override;
 
 
     protected:
@@ -118,7 +123,6 @@ namespace svg
     class Rectangle:public Polygon{
     public:
         //! Constructor of a Rectangle.
-        //! Recieves a fill elemen.
         //! @param fill rectangle color.
         //! @param width rectangle width.
         //! @param upleftcor upper left corner of the rectangle. 
@@ -129,8 +133,7 @@ namespace svg
         int width;
         Point upleftcor;
     };
-
-   
+    
 
 }
 #endif
