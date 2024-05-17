@@ -18,7 +18,7 @@
 
 ### SVGElements.cpp
 
-- Contains the code of each class function,previously declared in the header file, wich are the draw function, the constructor specific to each class and a transform function.
+- Contains the code of each class function,previously declared in the header file, which are the draw function, the constructor specific to each class and a transform function.
 
 
 ### readSVG.cpp
