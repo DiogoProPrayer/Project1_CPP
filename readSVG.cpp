@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "SVGElements.hpp"
 #include "external/tinyxml2/tinyxml2.h"
@@ -13,6 +12,9 @@ namespace svg
     void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
 
     void use(XMLElement *root, XMLElement *elem, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations);
+
+    //checks if the transformation has got an origin
+    Point checktransformorigin(string & ori);
 
 
     void readSVG(const string& svg_file, Point& dimensions, vector<SVGElement *>& svg_elements)
@@ -32,30 +34,18 @@ namespace svg
         readElements(xml_elem, doc.RootElement(),svg_elements,transformations); 
     }
 
-
-
-
     void readElements(XMLElement *root, XMLElement *elem,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations){
         
-    // HANDLE GROUPS
+        // HANDLE GROUPS
         if (string(elem->Name())=="g")
         {
-            if (elem->Attribute("transform")!=0)
-            {
-                if (elem->Attribute("transform-origin")!=0)
-                {
-                    Point o;
+            if (elem->Attribute("transform")!=0){
+                if (elem->Attribute("transform-origin")!=0){
                     string ori = elem->Attribute("transform-origin");
-                    for(char &c: ori){
-                        if (c==',' ){c=' ';}
-                        if (c=='(' ){c=' ';}
-                        if (c==')' ){c=' ';}
-                    }
-                    istringstream cogumelo(ori);
-                    cogumelo>>o.x;
-                    cogumelo>>o.y;
-                    transformations.push_back(pair<string,Point>(string(elem->Attribute("transform")),o));
-                } else{
+                    transformations.push_back(pair<string,Point>(string(elem->Attribute("transform")),checktransformorigin(ori)));
+                } 
+
+                else{
                     Point o = {0,0};
                     transformations.push_back(pair<string,Point>(elem->Attribute("transform"),o));
                 }
@@ -74,8 +64,6 @@ namespace svg
                     readElements(root, child, svg_elements, transformations);
                 }
             }
-
-
         } 
         
         
@@ -87,23 +75,14 @@ namespace svg
                     Point radius = {elem->IntAttribute("rx"), elem->IntAttribute("ry")};
                     Ellipse* objeto = new Ellipse(parse_color(elem->Attribute("fill")), p, radius);
                     //Check if any transformation is applied, and transform if needed
-                    if (elem->Attribute("transform")!=0)
-                    {
+
+                    if (elem->Attribute("transform")!=0){
+                        Point o = {0,0};
                         if (elem->Attribute("transform-origin")!=0)
                         {
-                            Point o;
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori));
                         } else{
-                            Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
                         }
                     }
@@ -127,17 +106,8 @@ namespace svg
                     {
                         if (elem->Attribute("transform-origin")!=0)
                         {
-                            Point o;
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori));
                         } else{
                             Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
@@ -163,17 +133,8 @@ namespace svg
                     {
                         if (elem->Attribute("transform-origin")!=0)
                         {
-                            Point o;
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori));
                         } else{
                             Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
@@ -210,17 +171,8 @@ namespace svg
                     {
                         if (elem->Attribute("transform-origin")!=0)
                         {
-                            Point o;
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori) );
                         } else{
                             Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
@@ -245,20 +197,11 @@ namespace svg
                     //Check if any transformation is applied, and transform if needed
                     if (elem->Attribute("transform")!=0)
                     {
-                        if (elem->Attribute("transform-origin")!=0)
-                        {
-                            Point o;
+                        if (elem->Attribute("transform-origin")!=0){
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
-                        } else{
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori) );
+                        } 
+                        else{
                             Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
                         }
@@ -296,17 +239,8 @@ namespace svg
                     {
                         if (elem->Attribute("transform-origin")!=0)
                         {
-                            Point o;
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            objeto->transform(string(elem->Attribute("transform")), o );
+                            objeto->transform(string(elem->Attribute("transform")), checktransformorigin(ori));
                         } else{
                             Point o = {0,0};
                             objeto->transform(string(elem->Attribute("transform")),o);
@@ -331,22 +265,13 @@ namespace svg
                     vector<pair<string,Point>> t_temp = transformations;  //Create a temporary transformations vector to pass the group transformations applied to the use
                     
                     //Check if <use> has any transformation, and store it in vector
-                    if (elem->Attribute("transform")!=0)
-                    {
-                        if (elem->Attribute("transform-origin")!=0)
-                        {
-                            Point o;
+                    if (elem->Attribute("transform")!=0){
+                        if (elem->Attribute("transform-origin")!=0){
                             string ori = elem->Attribute("transform-origin");
-                            for(char &c: ori){
-                                if (c==',' ){c=' ';}
-                                if (c=='(' ){c=' ';}
-                                if (c==')' ){c=' ';}
-                            }
-                            istringstream cogumelo(ori);
-                            cogumelo>>o.x;
-                            cogumelo>>o.y;
-                            t_temp.push_back(pair<string,Point>(elem->Attribute("transform"),o));
-                        } else{
+                            t_temp.push_back(pair<string,Point>(elem->Attribute("transform"),checktransformorigin(ori)));
+
+                        } 
+                        else{
                             Point o = {0,0};
                             t_temp.push_back(pair<string,Point>(elem->Attribute("transform"),o));
                         }
@@ -355,9 +280,7 @@ namespace svg
                     use(root,root,id,svg_elements,t_temp);
                     
                 }
-            
-            for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-            {
+            for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()){
                 readElements(root, child, svg_elements, transformations);
             }
         }
@@ -368,23 +291,29 @@ namespace svg
 
     void use(XMLElement *root, XMLElement *elem, string id ,vector<SVGElement *>& svg_elements, vector<pair<string,Point>> &transformations){
 
-    if (elem->Attribute("id")!=0)
-    {
+    if (elem->Attribute("id")!=0){
         string i = elem->Attribute("id");
-        if (i==id)
-        { 
+        if (i==id){ 
             readElements(root,elem,svg_elements,transformations);
         }
         
     }
 
-    for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-    {
+    for (XMLElement *child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()){
         use(root, child, id, svg_elements, transformations);
     }
 
     }
 
-
+    Point checktransformorigin(string & ori){
+        Point o;
+        for(char &c: ori){
+            if (c==','||c=='(' ||c==')' ){c=' ';}
+        }
+        istringstream cogumelo(ori);
+        cogumelo>>o.x;
+        cogumelo>>o.y;
+        return o;
+    }
 
 }
