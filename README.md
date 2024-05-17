@@ -10,4 +10,16 @@
 
 ## Accomplished tasks
 
-Brief summary of what you implemented.
+### SVGElements.hpp
+
+-
+
+
+### SVGElements.cpp
+
+- 
+
+
+### readSVG.cpp
+
+- 
