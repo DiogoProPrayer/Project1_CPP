@@ -6,7 +6,7 @@
 - up202306461 Diogo Alexandre Morais Pinheiro
 - up202305035 Ana Belém Meireles Bilhoto 
 - up202305089 Bárbara Catarina Cerqueira Veloso Gomes
-\n
+
 
 ## Accomplished tasks
 
@@ -22,4 +22,5 @@
 
 ### readSVG.cpp
 
-- 
+- Created a new recursive function readElements( ) to read all the elements of the .svg file, create an object for each element using dynamic memory, apply all the transformations using the transform( ) method and store them in the svg_elements vector;
+- Created a new (also recursive) function use( ), to read the entire file from the beggining and call the readElements( ) function when the "id" of the current element matches the "id" given as the argument to the function.
